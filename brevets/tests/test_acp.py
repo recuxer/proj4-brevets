@@ -51,23 +51,3 @@ def test_20perc_open():
     assert open_time(721, 600, begintime) == False
     assert open_time(1200, 1000, begintime) == begintime.shift(hours=200/34 + 200/32 + 200/30 + 400/28).isoformat()
     assert open_time(1201, 1000, begintime) == False
-    
-def test_20perc_close_special():
-    #whether final control is with 120% range of brevet with special endtimes for closetime
-    closetime = arrow.utcnow()
-    addedmins200 = closetime.shift(minutes=10)
-    addedmins400 = closetime.shift(minutes=20)
-    assert close_time(240, 200, closetime) == addedmins200.shift(hours=200/15).isoformat()
-    assert close_time(241, 200, closetime) == False
-    assert close_time(480, 400, closetime) == addedmins400.shift(hours=400/15).isoformat()
-    assert close_time(481, 400, closetime) == False
-
-def test_20perc_close_notspecial():
-    #whether final control is within 120% range of brevet with no special endtimes
-    closetime = arrow.utcnow()
-    assert close_time(360, 300, closetime) == closetime.shift(hours=300/15).isoformat()
-    assert close_time(361, 300, closetime) == False
-    assert close_time(720, 600, closetime) == closetime.shift(hours=600/15).isoformat()
-    assert close_time(721, 600, closetime) == False
-    assert close_time(1200, 1000, closetime) == closetime.shift(hours= 600/15 + 400/11.428).isoformat()
-    assert close_time(1201, 1000, closetime) == False

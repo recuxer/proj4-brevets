@@ -27,11 +27,11 @@ control_speedlimits = [(1000, 13.333, 26), (600, 11.428, 28), (400, 15, 30), (30
 def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
     
     #return false if greater than acceptable bounds
-    if int(control_dist_km) > brevet_dist_km * 1.20:
+    if int(control_dist_km) > brevet_dist_km * max_brevet_distance_multiple:
         return False
     
     #set control dist to brev distance if within acceptable bounds of final control 
-    if (int(control_dist_km) <= brevet_dist_km * 1.20 and int(control_dist_km) > brevet_dist_km):
+    if (int(control_dist_km) <= brevet_dist_km * max_brevet_distance_multiple and int(control_dist_km) > brevet_dist_km):
         control_dist_km = brevet_dist_km
     
     #loop to calculate hour value and successively decrease control distance to change speed limits
@@ -51,13 +51,6 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
 
 #######################################
 def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
-    
-    ###
-    # return false if greater than acceptable bounds. only included for possible instructor
-    # test cases as this error is handled solely by open_time func in flask_brevets.py file
-    ###
-    if int(control_dist_km) > brevet_dist_km * max_brevet_distance_multiple:
-        return False
     
     #in case control distance is 0, meaning it's the first control, close in 1 hour
     closetime = arrow.get(brevet_start_time)
