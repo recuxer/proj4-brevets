@@ -164,8 +164,8 @@
          //output error if control km greater than brevet km
          var times = data.result;
          if (!times) {
-             close_time_field.val("max control dist 120% of brev dist!");
-             open_time_field.val("max control dist 120% of brev dist!");
+             close_time_field.val("control must be < 121% of brevet!");
+             open_time_field.val("control must be < 121% of brevet!");
          } else {
          console.log("Got a response: " +  times);
          console.log("Response.open = " + times.open);
