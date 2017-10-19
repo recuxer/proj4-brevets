@@ -6,12 +6,19 @@ Reimplement the RUSA ACP controle time calculator with flask and ajax
 
 Revision Author: John Nemeth
 
-Sources: Class material
+Sources: 
+Class material
+
          http://arrow.readthedocs.io/en/latest/
+
          https://docs.python.org/2/tutorial/modules.html
+
          http://exampleprogramming.com/nose.html
+
          https://rusa.org/octime_alg.html
+
          and other, less used web resources
+
 
 ## Description:
 
