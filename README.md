@@ -9,15 +9,15 @@ Revision Author: John Nemeth
 Sources: 
 Class material
 
-         http://arrow.readthedocs.io/en/latest/
+http://arrow.readthedocs.io/en/latest/
 
-         https://docs.python.org/2/tutorial/modules.html
+https://docs.python.org/2/tutorial/modules.html
 
-         http://exampleprogramming.com/nose.html
+http://exampleprogramming.com/nose.html
 
-         https://rusa.org/octime_alg.html
+https://rusa.org/octime_alg.html
 
-         and other, less used web resources
+and other, less used web resources
 
 
 ## Description:
@@ -31,8 +31,9 @@ another input field, the times will be calculated and output to the relevant
 position on the webpage. The distance of the control point must not be greater
 than the brevet distance. A warning will pop up if that happens.
 
-For developers:
+Important Information:
 
 Test cases are included in the tests/ directory. It can be executed with
 "nosetests tests/ --exe" from the brevets directory while in a virtual
-environment.   
+environment. A dropdown for timezone has been added! The correct timezone
+must be selected for the times to be correct. 
