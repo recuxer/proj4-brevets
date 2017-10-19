@@ -7,19 +7,11 @@ from acp_times import open_time, close_time
 import arrow
 import nose
 
-def test_over_brevet_distance_start():
-    #test for result from giving control distance over brevet distance for start time
-    assert not open_time(201, 200, arrow.utcnow())
-
-def test_over_brevet_distance_close():
-    #testing control over brevet distance for closetime
-    assert not close_time(201, 200, arrow.utcnow())
-
 def test_control_open():
     #testing opentime of a control by grabbing current time and shifting by known equation
     begintime = arrow.utcnow()
-    assert open_time(100, 400, begintime) == begintime.shift(hours=(100/34)).isoformat() #2.941
-    assert open_time(200, 600, begintime) == begintime.shift(hours=(200/34)).isoformat() #5.882
+    assert open_time(100, 400, begintime) == begintime.shift(hours=(100/34)).isoformat() 
+    assert open_time(200, 600, begintime) == begintime.shift(hours=(200/34)).isoformat() 
     assert open_time(850, 1000, begintime) == begintime.shift(hours=(200/34 + 200/32 + 200/30 + 250/28)).isoformat()
 
 def test_control_close():
@@ -33,3 +25,15 @@ def test_first_control():
     #to test first control point of zero
     closetime = arrow.utcnow()
     assert close_time(0, 1000, closetime) == closetime.shift(hours=1).isoformat()
+
+def test_200brev_endtime():
+    #to test the endtime of 200km brevet
+    closetime = arrow.utcnow()
+    addedminutes = closetime.shift(minutes=10)
+    assert close_time(200, 200, closetime) == addedminutes.shift(hours=200/15).isoformat()
+
+def test_400brev_endtime():
+    #to test endtime of 400km brevet
+    closetime = arrow.utcnow()
+    addedminutes = closetime.shift(minutes=20)
+    assert close_time(400, 400, closetime) == addedminutes.shift(hours=400/15).isoformat()

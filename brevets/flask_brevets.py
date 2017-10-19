@@ -9,7 +9,6 @@ from flask import request
 import arrow  # Replacement for datetime, based on moment.js
 import acp_times  # Brevet time calculations
 import config
-
 import logging
 
 ###
@@ -46,22 +45,18 @@ def page_not_found(error):
 ###############
 @app.route("/_calc_times")
 def _calc_times():
-    """
-    Calculates open/close times from miles, using rules
-    described at https://rusa.org/octime_alg.html.
-    Expects one URL-encoded argument, the number of miles.
-    """
+    
     app.logger.debug("Got a JSON request")
     km = request.args.get('km', 999, type=float)
+    
     #new timezone and brevet distance variables
     timezone = request.args.get('tz', type=str) 
     b_distance = request.args.get('brev_dist', type=int)
+    
     #creates beginning date time arrow object from passed arguments in ajax script
-    begintime = arrow.get(request.args.get('bd', type=str) + " " + request.args.get('bt', type=str), 'YYYY-MM-DD HH:mm').replace(tzinfo=timezone)
+    begintime = arrow.get(request.args.get('bd', type=str) + " " + request.args.get('bt', type=str), 'YYYY-MM-DD HH:mm').replace(tzinfo=timezone).isoformat()
     app.logger.debug("km={}".format(km))
     app.logger.debug("request.args: {}".format(request.args))
-    # FIXME: These probably aren't the right open and close times
-    # and brevets may be longer than 200km
     open_time = acp_times.open_time(km, b_distance, begintime)
     close_time = acp_times.close_time(km, b_distance, begintime)
     result = {"open": open_time, "close": close_time}

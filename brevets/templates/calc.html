@@ -63,6 +63,7 @@
     <option value="600">600km</option>
     <option value="1000">1000km</option>
   </select>
+  <!-- added big, long set of timezone options -->
   <label>Time Zone</label>
   <select name="tz" id="timezone">
     <option value="-08:00">-8 GMT</option>
@@ -152,15 +153,15 @@
     var km = control.find("input[name='km']").val();
     var open_time_field = control.find("input[name='open']");
     var close_time_field = control.find("input[name='close']");
-    var bd = $("#begin_date").val();			//added begin date
-    var bt = $("#begin_time").val();			//added begin date
-    var brev_dist = $("select[name=distance]").val();	//added distance of brevet
-    var tz = $("select[name=tz]").val();		//tz for timestamp calcs
+    var bd = $("#begin_date").val();				//added begin date
+    var bt = $("#begin_time").val();				//added begin time
+    var brev_dist = $("select[name=distance]").val();		//added distance of brevet
+    var tz = $("select[name=tz]").val();			//tz for timestamp calcs
     
     $.getJSON(TIME_CALC_URL, { km: km, bd: bd, bt: bt, brev_dist: brev_dist, tz: tz }, 
       // response handler
       function(data) {
-         //determine if control greater than brev dist
+         //output error if control km greater than brevet km
          if (parseInt(km) > brev_dist) {
              close_time_field.val("brevet km's is max!");
              open_time_field.val("brevet km's is max!");
