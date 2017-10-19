@@ -16,16 +16,18 @@ def test_over_brevet_distance_close():
     assert not close_time(201, 200, arrow.utcnow())
 
 def test_control_open():
-    #testing opentime of a control by grabbing current time and shifting by known hour value
+    #testing opentime of a control by grabbing current time and shifting by known equation
     begintime = arrow.utcnow()
-    assert open_time(100, 400, begintime) == begintime.shift(hours=2.941).isoformat()
-    assert open_time(200, 600, begintime) == begintime.shift(hours=5.882).isoformat()
+    assert open_time(100, 400, begintime) == begintime.shift(hours=(100/34)).isoformat() #2.941
+    assert open_time(200, 600, begintime) == begintime.shift(hours=(200/34)).isoformat() #5.882
+    assert open_time(850, 1000, begintime) == begintime.shift(hours=(200/34 + 200/32 + 200/30 + 250/28)).isoformat()
 
 def test_control_close():
-    #testing closetime of control by getting current time and shifting by known hour value
+    #testing closetime of control by getting current time and shifting by known equation
     closetime = arrow.utcnow()
-    assert close_time(100, 800, closetime) == closetime.shift(hours=6.667).isoformat()
-    assert close_time(200, 1000, closetime) == closetime.shift(hours=13.333).isoformat()
+    assert close_time(100, 800, closetime) == closetime.shift(hours=100/15).isoformat()
+    assert close_time(500, 1000, closetime) == closetime.shift(hours=500/15).isoformat()
+    assert close_time(625, 1000, closetime) == closetime.shift(hours=200/15 + 200/15 + 200/15 + 25/11.428).isoformat()
 
 def test_first_control():
     #to test first control point of zero

@@ -36,7 +36,7 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
     ohours = 0
     for dist, minspeed, maxspeed in control_speedlimits:
         if control_dist_km > dist:
-            ohours += round((control_dist_km - dist) / maxspeed, 3)
+            ohours += (control_dist_km - dist) / maxspeed
             control_dist_km = dist
     
     opentime = brevet_start_time
@@ -66,7 +66,7 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
     chours = 0 
     for dist, minspeed, maxspeed in control_speedlimits:
         if control_dist_km > dist:
-            chours += round((control_dist_km - dist) / minspeed, 3)
+            chours += (control_dist_km - dist) / minspeed
             control_dist_km = dist
 
     return closetime.shift(hours=chours).isoformat()
