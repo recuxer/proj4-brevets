@@ -58,6 +58,12 @@ def _calc_times():
     app.logger.debug("km={}".format(km))
     app.logger.debug("request.args: {}".format(request.args))
     open_time = acp_times.open_time(km, b_distance, begintime)
+    
+    #return false if control distance is greater than 1.20 * brevet_dist before calculating closetime
+    if not open_time:
+        return flask.jsonify(result=False)
+    
+    #continue with calculation of times if opentime was given valid control distance
     close_time = acp_times.close_time(km, b_distance, begintime)
     result = {"open": open_time, "close": close_time}
     return flask.jsonify(result=result)
