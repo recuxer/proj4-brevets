@@ -63,6 +63,32 @@
     <option value="600">600km</option>
     <option value="1000">1000km</option>
   </select>
+  <label>Time Zone</label>
+  <select name="tz" id="timezone">
+    <option value="00:00">UTC</option>
+    <option value="-11:00">-11 GMT</option>
+    <option value="-10:00">-10 GMT</option>
+    <option value="-09:00">-9 GMT</option>
+    <option value="-08:00">-8 GMT</option>
+    <option value="-07:00">-7 GMT</option>
+    <option value="-06:00">-6 GMT</option>
+    <option value="-05:00">-5 GMT</option>
+    <option value="-04:00">-4 GMT</option>
+    <option value="-03:00">-3 GMT</option>
+    <option value="-02:00">-2 GMT</option>
+    <option value="-01:00">-1 GMT</option>
+    <option value="+11:00">+11 GMT</option>
+    <option value="+10:00">+10 GMT</option>
+    <option value="+09:00">+9 GMT</option>
+    <option value="+08:00">+8 GMT</option>
+    <option value="+07:00">+7 GMT</option>
+    <option value="+06:00">+6 GMT</option>
+    <option value="+05:00">+5 GMT</option>
+    <option value="+04:00">+4 GMT</option>
+    <option value="+03:00">+3 GMT</option>
+    <option value="+02:00">+2 GMT</option>
+    <option value="+01:00">+1 GMT</option>
+  </select>
   </div> <!-- columns 1--4  -->
   <div class="col-md-6">
     <label>Begins at</label>
@@ -126,20 +152,28 @@
     var km = control.find("input[name='km']").val();
     var open_time_field = control.find("input[name='open']");
     var close_time_field = control.find("input[name='close']");
-    //var bd = control.find("input[name='begin_date']").val();
-    var bd = $("#begin_date").val();	//added begin date
-    var bt = $("#begin_time").val();	//added begin date
-    $.getJSON(TIME_CALC_URL, { km: km, bd: bd, bt: bt }, 
+    var bd = $("#begin_date").val();			//added begin date
+    var bt = $("#begin_time").val();			//added begin date
+    var brev_dist = $("select[name=distance]").val();	//added distance of brevet
+    var tz = $("select[name=tz]").val();		//tz for timestamp calcs
+    
+    $.getJSON(TIME_CALC_URL, { km: km, bd: bd, bt: bt, brev_dist: brev_dist, tz: tz }, 
       // response handler
       function(data) {
+         //determine if control greater than brev dist
+         if (parseInt(km) > brev_dist) {
+             close_time_field.val("brevet km's is max!");
+             open_time_field.val("brevet km's is max!");
+         } else {
          var times = data.result;
          console.log("Got a response: " +  times);
          console.log("Response.open = " + times.open);
          open_time_field.val( moment(times.open).format("ddd M/D H:mm"));
          close_time_field.val( moment(times.close).format("ddd M/D H:mm"));
+         }
        } // end of handler function
      );// End of getJSON
-    }
+}
 
   $(document).ready(function(){
    // Do the following when the page is finished loading

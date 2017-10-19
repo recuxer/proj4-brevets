@@ -15,7 +15,6 @@ import arrow
 #  javadoc comments.
 #
 
-#CONTROL_SPEEDS = [(0, 15, 34), (200, 34, 15), (400, 32, 15), (600, 30, 15), (1000, 28, 11.428), (1300, 26, 13.333)]
 control_speedlimits = [(1000, 13.333, 26), (600, 11.428, 28), (400, 15, 30), (200, 15, 32), (0, 15, 34)]
 
 def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
@@ -31,16 +30,16 @@ def open_time(control_dist_km, brevet_dist_km, brevet_start_time):
        An ISO 8601 format date string indicating the control open time.
        This will be in the same time zone as the brevet start time.
     """
+    # only used for test cases as this error is handled by jquery on clientside
+    if int(control_dist_km) > brevet_dist_km:
+        return
     ohours = 0
     for dist, minspeed, maxspeed in control_speedlimits:
         if control_dist_km > dist:
-            ohours += (control_dist_km - dist) / maxspeed
+            ohours += round((control_dist_km - dist) / maxspeed, 3)
             control_dist_km = dist
     
     opentime = brevet_start_time
-    
-    #print(brevet_start_time.shift(hours=openhours).isoformat())
-    #print(openhours)
     return opentime.shift(hours=ohours).isoformat()
 
 def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
@@ -56,13 +55,18 @@ def close_time(control_dist_km, brevet_dist_km, brevet_start_time):
        An ISO 8601 format date string indicating the control close time.
        This will be in the same time zone as the brevet start time.
     """
+    #only for test cases as this is handled by jquery on clientside
+    if int(control_dist_km) > brevet_dist_km:
+        return
+    #in case control distance is 0, meaning it's the first control,
+    #close in 1 hour
+    closetime = brevet_start_time
+    if control_dist_km == 0:
+        return closetime.shift(hours=1).isoformat()
     chours = 0 
     for dist, minspeed, maxspeed in control_speedlimits:
         if control_dist_km > dist:
-            chours += (control_dist_km - dist) / minspeed
+            chours += round((control_dist_km - dist) / minspeed, 3)
             control_dist_km = dist
 
-    closetime = brevet_start_time
-    print(chours)
     return closetime.shift(hours=chours).isoformat()
-    #return arrow.now().isoformat()
